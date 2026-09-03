@@ -12,7 +12,57 @@ void remover_comentario(char *linha){
 }
 
 void normalizar_espacos(char *linha){
-    // Implementar função 
+    if (linha == NULL) return;
+
+    int i = 0;
+    int j = 0;
+    int dentro_string = 0;
+    int espaco_pendente = 0;
+
+    // 1. Ignora espacos e tabulacoes no inicio da linha (ltrim)
+    while (linha[i] == ' ' || linha[i] == '\t') {
+        i++;
+    }
+
+    // 2. Percorre a linha caractere por caractere
+    while (linha[i] != '\0' && linha[i] != '\n' && linha[i] != '\r') {
+        // Alterna se entrar ou sair de uma string delimitada por aspas
+        if (linha[i] == '"') {
+            // Se tinha espaco acumulado fora da string, insere agora antes de abrir/fechar aspas
+            if (espaco_pendente && j > 0) {
+                linha[j++] = ' ';
+                espaco_pendente = 0;
+            }
+            dentro_string = !dentro_string;
+            linha[j++] = linha[i];
+        } 
+        else if (dentro_string) {
+            // Se estiver dentro da string: copia exatamente tudo sem alterar (preserva tabs, espacos, etc.)
+            linha[j++] = linha[i];
+        } 
+        else {
+            // Fora da string: trata espacos e tabulacoes
+            if (linha[i] == ' ' || linha[i] == '\t') {
+                if (j > 0) {
+                    espaco_pendente = 1; // Marca que ha espaco a ser inserido entre tokens
+                }
+            } else {
+                // Caractere comum: escreve o espaco pendente (se houver) e depois o caractere
+                if (espaco_pendente) {
+                    linha[j++] = ' ';
+                    espaco_pendente = 0;
+                }
+                linha[j++] = linha[i];
+            }
+        }
+        i++;
+    }
+
+    // 3. Finaliza a string sem espacos no final (rtrim)
+    linha[j] = '\0';
+}
+    }
+
 }
 
 int linha_vazia(const char *linha){
