@@ -1,51 +1,66 @@
 @echo off
+REM ==========================================================================
+REM  testes.bat - pre-processador uAssembly
+REM
+REM  Executar na RAIZ do projeto (junto de main.c):   testes.bat
+REM
+REM  Compila o projeto e roda o pre-processador em todos os .asm da pasta
+REM  testes\, exibindo o resultado de cada um.
+REM
+REM    testes\<nome>.asm   entrada
+REM    testes\<nome>.pre   saida gerada pelo programa
+REM
+REM  Nao ha comparacao com gabarito - a conferencia e visual.
+REM ==========================================================================
+
 setlocal
 
 echo ========================================
-echo TESTES DE INTEGRACAO - PRE-PROCESSADOR
+echo PRE-PROCESSADOR - SAIDAS GERADAS
 echo ========================================
 
-gcc main.c preprocessador.c f_quebras.c -o main.exe
+gcc main.c preprocessador.c -o main.exe -Wall -Wextra
 if errorlevel 1 (
     echo.
     echo ERRO: o projeto ainda nao esta compilando.
-    echo Isso pode acontecer enquanto os membros 1, 3 e 4 ainda estao integrando as funcoes.
+    echo Verifique se todas as funcoes foram integradas em preprocessador.c.
     exit /b 1
 )
 
-set FALHAS=0
+if not exist "testes" (
+    echo ERRO: pasta "testes" nao encontrada.
+    exit /b 1
+)
 
-call :teste crlf
-call :teste lf
-call :teste sem_quebra
-call :teste vazio
-call :teste linhas_vazias
+set TOTAL=0
+set ERROS=0
+
+for %%F in (testes\*.asm) do call :processar "%%~nF"
 
 echo.
 echo ========================================
-if "%FALHAS%"=="0" (
-    echo RESULTADO: TODOS OS TESTES PASSARAM
-    exit /b 0
-) else (
-    echo RESULTADO: %FALHAS% TESTE^(S^) FALHARAM
-    exit /b 1
-)
+echo %TOTAL% arquivo^(s^) processado^(s^), %ERROS% com erro.
+echo Saidas gravadas em testes\
+exit /b 0
 
-:teste
+REM --------------------------------------------------------------------------
+REM  :processar <nome sem extensao>
+REM --------------------------------------------------------------------------
+:processar
 set NOME=%~1
-main.exe "testes_membro2\%NOME%.asm" "testes_membro2\%NOME%.saida.pre" >nul
+set /a TOTAL+=1
+
+echo.
+echo ==================================================
+echo  %NOME%.asm
+echo ==================================================
+
+main.exe "testes\%NOME%.asm" "testes\%NOME%.pre" >nul
 if errorlevel 1 (
-    echo [FALHOU] %NOME% - executavel retornou erro
-    set /a FALHAS+=1
+    echo [ERRO] o executavel retornou codigo de erro.
+    set /a ERROS+=1
     goto :eof
 )
 
-fc /b "testes_membro2\%NOME%.saida.pre" "testes_membro2\%NOME%.pre" >nul
-if errorlevel 1 (
-    echo [FALHOU] %NOME% - saida diferente do esperado
-    set /a FALHAS+=1
-) else (
-    echo [OK] %NOME%
-)
-
+type "testes\%NOME%.pre"
 goto :eof
