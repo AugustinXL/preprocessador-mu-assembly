@@ -4,3 +4,7 @@
 
 *.pre
 !testes/*_esperado.pre
+
+*.lex
+*.ts
+*.err

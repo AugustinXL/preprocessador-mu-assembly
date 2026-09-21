@@ -19,7 +19,7 @@ echo ========================================
 echo PRE-PROCESSADOR - SAIDAS GERADAS
 echo ========================================
 
-gcc main.c preprocessador.c -o main.exe -Wall -Wextra
+gcc main.c preprocessador.c lexico.c tabela_simbolos.c -o main.exe -Wall -Wextra
 if errorlevel 1 (
     echo.
     echo ERRO: o projeto ainda nao esta compilando.
@@ -55,7 +55,7 @@ echo ==================================================
 echo  %NOME%.asm
 echo ==================================================
 
-main.exe "testes\%NOME%.asm" "testes\%NOME%.pre" >nul
+main.exe "testes\%NOME%.asm" "testes\%NOME%.pre" "testes\%NOME%.lex" >nul
 if errorlevel 1 (
     echo [ERRO] o executavel retornou codigo de erro.
     set /a ERROS+=1

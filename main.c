@@ -86,7 +86,7 @@ int main(int argc, char *argv[]){
     }
 
 
-    PreProcessamento(entrada, saida);
+    preprocessar(entrada, saida);
 
     fclose(entrada);
     fclose(saida);

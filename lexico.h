@@ -9,6 +9,18 @@
 #define MAX_SIMBOLOS 300
 #define MAX_ERROS 500
 
+/* Categorias da Tabela de Simbolos (campo "categoria" de Simbolo) */
+#define CAT_INSTRUCAO   "INSTRUCAO"
+#define CAT_DIRETIVA    "DIRETIVA"
+#define CAT_REGISTRADOR "REGISTRADOR"
+#define CAT_ID          "ID"
+
+/* Nomes de token devolvidos por tsBuscar() em "nomeToken" */
+#define TK_INSTRUCAO    "TK_INSTRUCAO"
+#define TK_DIRETIVA     "TK_DIRETIVA"
+#define TK_REGISTRADOR  "TK_REGISTRADOR"
+#define TK_ID           "TK_ID"
+
 typedef struct {
 
     char nome[MAX_NOME];

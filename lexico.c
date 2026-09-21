@@ -125,29 +125,6 @@ void AnaliseLexica(FILE *in, FILE *out){
     } while (strcmp(t.nome, "TK_EOF") != 0);
 }
 
-void tsInicializar(void){
-
-}
-
-int tsBuscar(const char *lexema, char *categoria, char *nomeToken){
-
-    (void)lexema; (void)categoria; (void)nomeToken;
-
-    return 0;
-
-}
-
-void tsInserir(const char *lexema, const char *categoria, int linha, int coluna){
-   
-    (void)lexema; (void)categoria; (void)linha; (void)coluna;
-
-}
-void tsGravar(FILE *out){
-
-    fprintf(out, "LEXEMA,CATEGORIA,LINHA,COLUNA\n");
-
-}
-
 void erroRegistrar(const char *tipo, const char *lexema, int linha, int coluna){
 
     (void)tipo; (void)lexema; (void)linha; (void)coluna;
